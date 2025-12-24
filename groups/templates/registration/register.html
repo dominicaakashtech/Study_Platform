@@ -1,0 +1,473 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Login{% endblock %}</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #4a5fc1;
+            --secondary-color: #6c757d;
+            --success-color: #28a745;
+            --info-color: #17a2b8;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --dark-bg: #111;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+
+        body {
+            padding-top: 70px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            background: linear-gradient(135deg, #010101 0%, #3b145b 100%);
+            box-shadow: 0 2px 4px rgba(0,0,0,.1);
+            min-height: 60px;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        /* HERO */
+        .hero-section {
+            background: linear-gradient(135deg, #121212 0%, #370d61 100%);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .hero-section h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .hero-section p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+        }
+
+        /* CARDS */
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,.15);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #020f47 0%, #1e0239 100%);
+            color: white;
+            border-radius: 15px 15px 0 0 !important;
+            font-weight: 600;
+        }
+
+        /* BUTTONS */
+        .btn-primary {
+            background: linear-gradient(135deg, #e10707 0%, #c17e7e 100%);
+            border: none;
+            border-radius: 25px;
+            padding: 10px 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(43, 55, 109, 0.4);
+        }
+
+        /* CHAT */
+        .chat-container {
+            height: 400px;
+            overflow-y: auto;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        .message-bubble {
+            background: #ffffff;
+            border-radius: 15px;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            margin-right: auto;
+            max-width: 70%;
+            box-shadow: 0 2px 5px rgba(0,0,0,.05);
+        }
+
+        .message-bubble.own-message {
+            background: linear-gradient(135deg, #4a5fc1 0%, #0bb0ed 100%);
+            color: #ffffff;
+            margin-left: auto;
+        }
+
+        /* RESOURCES */
+        .resource-item {
+            border-left: 4px solid #667eea;
+            padding-left: 15px;
+            margin-bottom: 15px;
+        }
+
+        .calendar-event {
+            background-color: #e7f3ff;
+            border-left: 4px solid #0066cc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        /* SEARCH */
+        .search-box {
+            border-radius: 25px;
+            padding: 10px 20px;
+        }
+
+        /* AVATAR */
+        .member-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #19191a 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        /* STATS */
+        .stats-box {
+            background: linear-gradient(135deg, #161926 0%, #30035e 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stats-box h3 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        /* FOOTER */
+        .footer {
+            background-color: var(--dark-bg);
+            color: #ffffff;
+        }
+
+        .footer h5 {
+            color: #ffffff;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        .footer-link {
+            color: rgba(255, 255, 255, 0.75);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-link:hover {
+            color: #ffffff;
+        }
+
+        .social-icons a {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.75);
+            transition: transform 0.3s, color 0.3s;
+            display: inline-block;
+        }
+
+        .social-icons a:hover {
+            color: #ffffff;
+            transform: translateY(-3px);
+        }
+
+        .footer .text-muted {
+            color: rgba(255, 255, 255, 0.6) !important;
+        }
+
+        .navbar-logo {
+    height: 36px;
+    width: auto;
+    object-fit: contain;
+}
+
+@media (min-width: 992px) {
+    .navbar-logo {
+        height: 42px;
+    }
+}
+
+/* NAVBAR SEARCH */
+.navbar-search input,
+.navbar-search select {
+    border-radius: 20px;
+    min-width: 220px;          /* ⬅ increased */
+}
+
+.navbar-search input {
+    max-width: 360px;          /* ⬅ increased */
+    width: 360px;              /* ⬅ force width */
+}
+
+.navbar-search select {
+    max-width: 180px;
+}
+
+/* Search button */
+.navbar-search button {
+    border-radius: 20px;
+    white-space: nowrap;
+    padding: 6px 18px;
+}
+
+/* Mobile tweaks */
+@media (max-width: 991px) {
+    .navbar-search {
+        width: 100%;
+        gap: 10px;
+    }
+
+    .navbar-search input {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .navbar-search select {
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+    </style>
+
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'home' %}">
+    <img src="{% static 'images/logo.png' %}" alt="Smart Connect Logo" class="navbar-logo">
+    <span>Smart Connect</span>
+</a>
+
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+
+            <!-- LEFT -->
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'browse_groups' %}">Browse Groups</a></li>
+
+                {% if user.is_authenticated %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'create_group' %}">Create Group</a></li>
+                {% endif %}
+            </ul>
+
+                        <!-- RIGHT -->
+            <ul class="navbar-nav ms-auto">
+                {% if user.is_authenticated %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        <i class="bi bi-person-circle"></i> {{ user.username }}
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <form method="post" action="{% url 'logout' %}">
+                                {% csrf_token %}
+                                <button type="submit" class="dropdown-item">
+                                    <i class="bi bi-box-arrow-right"></i> Logout
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </li>
+                {% else %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Register</a></li>
+                {% endif %}
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h4>Create Account</h4>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post">
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+                            {{ form.username.label_tag }}
+                            {{ form.username }}
+                            {{ form.username.errors }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.email.label_tag }}
+                            <input type="email" name="email" class="form-control" id="id_email" value="{{ form.email.value|default:'' }}" required>
+                            {{ form.email.errors }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form.password1.label_tag }}
+                            <input type="password" name="password1" class="form-control" id="id_password1" required>
+                            {% if form.password1.errors %}
+                            <div class="text-danger small">{{ form.password1.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form.password2.label_tag }}
+                            <input type="password" name="password2" class="form-control" id="id_password2" required>
+                            {% if form.password2.errors %}
+                            <div class="text-danger small">{{ form.password2.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">
+                            Register
+                        </button>
+                    </form>
+                </div>
+                <div class="card-footer text-center small">
+                    Already have an account?
+                    <a href="{% url 'login' %}">Login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+<!-- FOOTER -->
+<footer class="footer mt-auto">
+    <div class="container py-5">
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6">
+                <a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'home' %}">
+    <img src="{% static 'images/logo.png' %}" alt="Smart Connect Logo" class="navbar-logo">
+    <span>Smart Connect</span></a>
+    
+                <p class="text-muted">
+                    Empowering students and lifelong learners to collaborate, share resources,
+                    and achieve their goals together.
+                </p>
+            </div>
+
+            <div class="col-lg-2 col-md-6">
+                <h5>Explore</h5>
+                <ul class="list-unstyled">
+                    <li><a href="{% url 'home' %}" class="footer-link">Home</a></li>
+                    <li><a href="{% url 'browse_groups' %}" class="footer-link">Browse Groups</a></li>
+                    {% if user.is_authenticated %}
+                    <li><a href="{% url 'dashboard' %}" class="footer-link">Dashboard</a></li>
+                    <li><a href="{% url 'create_group' %}" class="footer-link">Create Group</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+
+            <div class="col-lg-2 col-md-6">
+                <h5>Support</h5>
+                <ul class="list-unstyled">
+                    <li  class="footer-link">Real Time Chat</li>
+                    <li class="footer-link">Security</li>
+                    <li class="footer-link">Share Resources</li>
+                    <li class="footer-link">Schedule Sessions</li>
+                </ul>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <h5>Contact Us</h5>
+                <p class="text-muted mb-1"><i class="bi bi-geo-alt me-2"></i> 123 Smart Connect, Tech City</p>
+                <p class="text-muted mb-1"><i class="bi bi-envelope me-2"></i> smartconnect@gmail.com</p>
+
+                <div class="social-icons d-flex gap-3 mt-3">
+                    <a href="https://www.facebook.com/"><i class="bi bi-facebook"></i></a>
+                    <a href="https://x.com/"><i class="bi bi-twitter-x"></i></a>
+                    <a href="https://www.instagram.com/"><i class="bi bi-instagram"></i></a>
+                    <a href="https://in.linkedin.com/"><i class="bi bi-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center py-3 border-top border-secondary">
+        <p class="mb-0 text-muted" style="font-size: 0.9rem;">
+            &copy; 2025 Smart Connect. All rights reserved.
+        </p>
+    </div>
+</footer>
+
+<!-- JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const searchInput = document.getElementById("faqSearch");
+
+    if (!searchInput) return;
+
+    searchInput.addEventListener("keyup", function () {
+        let filter = this.value.toLowerCase();
+        let items = document.querySelectorAll(".faq-item");
+
+        items.forEach(function (item) {
+            let text = item.innerText.toLowerCase();
+            item.style.display = text.includes(filter) ? "" : "none";
+        });
+    });
+
+});
+</script>
+
+</body>
+</html>

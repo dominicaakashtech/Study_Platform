@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- HERO SECTION -->
+<div class="hero-section">
+    <div class="container text-center">
+        <h1><i class="bi bi-people-fill"></i> Welcome to Smart Connect</h1>
+        <p>Connect with peers, share resources, and achieve academic excellence together</p>
+
+        {% if not user.is_authenticated %}
+            <a href="{% url 'login' %}" class="btn btn-light btn-lg me-2">Get Started</a>
+        {% endif %}
+        <a href="{% url 'browse_groups' %}" class="btn btn-outline-light btn-lg">Browse Groups</a>
+    </div>
+</div>
+
+<!-- FEATURES / STATS -->
+<div class="container my-5">
+    <div class="row mb-5 text-center">
+        <div class="col-md-3">
+            <div class="stats-box">
+                <h3><i class="bi bi-people"></i></h3>
+                <p class="mb-0">Join Study Groups</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stats-box">
+                <h3><i class="bi bi-chat-dots"></i></h3>
+                <p class="mb-0">Real-time Chat</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stats-box">
+                <h3><i class="bi bi-file-earmark-text"></i></h3>
+                <p class="mb-0">Share Resources</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stats-box">
+                <h3><i class="bi bi-calendar-event"></i></h3>
+                <p class="mb-0">Schedule Sessions</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- FEATURED GROUPS -->
+    <h2 class="text-center mb-4">Featured Study Groups</h2>
+    <div class="row">
+        {% for group in featured_groups %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ group.name }}</h5>
+                    <p class="text-muted">
+                        <i class="bi bi-tag"></i> {{ group.subject }}
+                    </p>
+                    <p class="card-text">
+                        {{ group.description|truncatewords:20 }}
+                    </p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">
+                            <i class="bi bi-people"></i> {{ group.member_count }} members
+                        </small>
+                        <a href="{% url 'group_detail' group.pk %}" class="btn btn-primary btn-sm">
+                            View Group
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center">
+            <p class="text-muted">
+                No groups available yet. Be the first to create one!
+            </p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- FAQ SECTION (HOME PAGE ONLY) -->
+<div class="container my-5">
+    <h2 class="text-center mb-4">Frequently Asked Questions</h2>
+
+    <div class="accordion" id="faqAccordion">
+
+        <!-- Security -->
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#faqSecurity">
+                     How secure is Smart Connect?
+                </button>
+            </h2>
+            <div id="faqSecurity" class="accordion-collapse collapse show">
+                <div class="accordion-body">
+                    Smart Connect uses secure authentication, encrypted passwords,
+                    and protected user sessions to ensure your data remains safe.
+                </div>
+            </div>
+        </div><br>
+
+        <!-- Privacy -->
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#faqPrivacy">
+                     Is my personal data safe?
+                </button>
+            </h2>
+            <div id="faqPrivacy" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                    Yes. We only collect necessary information and never share
+                    your data with third parties.
+                </div>
+            </div>
+        </div><br>
+
+        <!-- Terms -->
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#faqTerms">
+                     What are the Terms & Conditions?
+                </button>
+            </h2>
+            <div id="faqTerms" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                    By using LEARN HUB, you agree to follow community rules,
+                    avoid misuse, and respect other members.
+                </div>
+            </div>
+        </div><br>
+
+        <!-- Rules -->
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#faqRules">
+                     What are the community guidelines?
+                </button>
+            </h2>
+            <div id="faqRules" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                    Be respectful, helpful, and maintain academic integrity.
+                    Any violation may lead to account suspension.
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- END FAQ -->
+
+{% endblock %}
